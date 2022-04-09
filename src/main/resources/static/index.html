@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор</title>
+    <script type="text/javascript" src="jquery/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+<div style="width: 450px; margin: 150px auto; padding: 30px; border: solid 2px lightgray; border-radius: 3px">
+    <form id="calculator">
+        <p class="h4">Калькулятор</p>
+
+        <div class="mb-3" style="width: 150px; display: inline-block; margin-top: 12px">
+            <label for="arg1" class="form-label">аргумент1</label>
+            <input type="number" maxlength="8" class="form-control" id="arg1" name="arg1">
+        </div>
+
+        <select name="action" class="form-control" style="width: 60px; display: inline-block; margin-left: 7px">
+            <option value="plus">+</option>
+            <option value="minus">-</option>
+            <option value="multiplication">*</option>
+            <option value="division">/</option>
+        </select>
+
+        <div class="mb-3" style="width: 150px; display: inline-block; margin-left: 7px">
+            <label for="arg2" class="form-label">аргумент2</label>
+            <input type="number" maxlength="8" class="form-control" id="arg2" name="arg2">
+        </div>
+
+        <div style="display: block">
+            <button onclick="getAnswer();" style="display: inline-block;" type="button" class="btn btn-primary">
+                Посчитать
+            </button>
+            <div style="display: inline-block; margin-left: 25px">
+                Ответ: <span id="answer-text"></span>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    function getAnswer() {
+        const formData = {};
+
+        $('#calculator').find('input, select').each(function () {
+            formData[this.name] = $(this).val();
+        });
+
+        if (formData.arg1 == '' || formData.arg2 == '') {
+            alert("Поля аргументов не должны быть пустыми")
+            return
+        } else {
+            $.get("http://localhost:8080/api/calculator",
+                formData,
+                function (data) {
+                    $('#answer-text').html(data)
+                });
+        }
+    }
+
+</script>
+</body>
+</html>
